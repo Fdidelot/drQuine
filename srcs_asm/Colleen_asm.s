@@ -1,27 +1,24 @@
-; Outside
+	; Outside
+	global main
+	extern printf
+	default rel
 
 section .data
 content:
-	db "; Outside%2$c%2$csection .data%2$ccontent:%2$c%4$cdb %3$c%1$s%3$c, 0%2$c%2$csection .text%2$c%4$cglobal main%2$c%4$cextern printf%2$c%2$cstart:%2$c%4$ccall main%2$c%4$cret%2$c%2$cmain:%2$c%4$c; Inside%2$c%4$cpush rbp%2$c%4$cmov rbp, rsp%2$c%4$clea rdi, [rel content]%2$c%4$clea rsi, [rel content]%2$c%4$cmov rdx, 10%2$c%4$cmov rcx, 34%2$c%4$cmov r8, 9%2$c%4$ccall printf WRT ..plt%2$c%4$cmov rsp, rbp%2$c%4$cpop rbp%2$c%4$cret%2$c", 0
+	db "%2$c; Outside%1$c%2$cglobal main%1$c%2$cextern printf%1$c%2$cdefault rel%1$c%1$csection .data%1$ccontent:%1$c%2$cdb %3$c%4$s%3$c%1$c%1$csection .text%1$cmain:%1$c%2$c; Inside%1$c%2$cpush rbp%1$c%2$cmov rbp, rsp%1$c%2$clea rdi, content%1$c%2$cmov rsi, 10%1$c%2$cmov rdx, 9%1$c%2$cmov rcx, 34%1$c%2$clea r8, content%1$c%2$ccall printf WRT ..plt%1$c%2$cmov rax, 0%1$c%2$cmov rsp, rbp%1$c%2$cpop rbp%1$c%2$cret%1$c"
 
 section .text
-	global main
-	extern printf
-
-start:
-	call main
-	ret
-
 main:
 	; Inside
 	push rbp
 	mov rbp, rsp
-	lea rdi, [rel content]
-	lea rsi, [rel content]
-	mov rdx, 10
+	lea rdi, content
+	mov rsi, 10
+	mov rdx, 9
 	mov rcx, 34
-	mov r8, 9
+	lea r8, content
 	call printf WRT ..plt
+	mov rax, 0
 	mov rsp, rbp
 	pop rbp
 	ret
